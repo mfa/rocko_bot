@@ -34,7 +34,7 @@ def generate_status(username, text):
     text = text.replace('.','').replace('?','').replace('!','').replace('#','')
     for word in text.split(' '):
         if stemmer.stem(word) in stemmed_keys:
-            found.append(dict(key_mapper).get(word))
+            found.append(dict(key_mapper).get(stemmer.stem(word)))
     if found:
         status = u'@%s %s' % (
             username,
@@ -85,4 +85,4 @@ while True:
     except TweepError:
         pass
 
-#generate_status('x', 'schorle oder bier')
+#print(generate_status('x', '@rocko_sac kollege #test'))
