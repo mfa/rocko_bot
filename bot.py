@@ -57,6 +57,8 @@ class StdOutListener(tweepy.streaming.StreamListener):
         data = json.loads(data)
         username = data.get('user').get('screen_name')
         text = data.get('text')
+        print(username),
+        print(text)
         try:
             # FIXME: how to test if already faved?
             api.create_favorite(data.get('id'))
