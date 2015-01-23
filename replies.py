@@ -12,7 +12,9 @@ replies_dict = {
     'nra': ['eine wichtige, gesellschaftsbildende Insitution'],
     'kollege': ['die besten. also deine.'],
     'firma': ['gibt nur eine'],
-    'suite': ['abcd'],
+    'suite': ['Prost!'],
+    '212': ['Prost!'],
+    'minibar': ['Prost!'],
     'schnitzel': ['urdeutsches gericht','gibts das heute mal in vegetarisch?'],
     'damals': ['damals... als startup!','damals war eh alles besser'],
     'krieg': ['eigentlich haben wir den gar nicht so verloren'],
@@ -23,6 +25,7 @@ replies_dict = {
     'beer': ['one miller lite please!'],
     'vfb': ['hoffentlich steigen wir dann bald wieder auf'],
     'neulich': ['neulich war nach damals'],
+    'spassfest': ['mit parade truck!'],
 }
 
 nothing_found = ['ich weis gar nicht, was ich dazu sagen soll.','mir gehen die texte aus']
