@@ -54,4 +54,3 @@ l = StdOutListener()
 
 stream = tweepy.Stream(auth, l)
 stream.filter(follow=USER_LIST)
-#stream.userstream()
