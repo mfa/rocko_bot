@@ -58,11 +58,11 @@ replies_dict = {
 }
 
 nothing_found = ['ich weis gar nicht, was ich dazu sagen soll.',
-                 u'mir gehen die texte aus'
-                 u'unfassbar'
-                 u'ich bin sprachlos'
-                 u'Jo!'
-                 u'Yo!'
-                 u'Prost?'
-                 u'Alter!'
+                 u'mir gehen die texte aus',
+                 u'unfassbar',
+                 u'ich bin sprachlos',
+                 u'Jo!',
+                 u'Yo!',
+                 u'Prost?',
+                 u'Alter!',
                  ]
