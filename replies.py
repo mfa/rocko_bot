@@ -9,6 +9,8 @@ replies_dict = {
                   'das konzept ist eigentlich gut, nur die Umsetzungen...'],
     'ak-47': ['Kommunisten-Waffe',
               u'zuverlässige Waffe!'],
+    'usa': [u'bestes Land überhaupt',
+              u'USA? die spionieren uns aus!'],
     'kalaschnikow': ['Kommunisten-Waffe',
                      u'zuverlässige Waffe!'],
     'schorle': ['einer geht noch',
