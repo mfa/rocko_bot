@@ -1,6 +1,4 @@
-schnitzelbot
-============
+rocko_bot
+=========
 
-Follow and fav all schnitzel tweets
-
-Used for @SchnitzelFollow -- https://twitter.com/schnitzelfollow
+Used for @rocko_bot -- https://twitter.com/rocko_bot
