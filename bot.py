@@ -31,6 +31,7 @@ def generate_status(username, text):
     for key in replies_dict.keys():
         key_mapper.append((stemmer.stem(key), key))
         stemmed_keys.append(stemmer.stem(key))
+    text = text.replace('.','').replace('?','').replace('!','').replace('#','')
     for word in text.split(' '):
         if stemmer.stem(word) in stemmed_keys:
             found.append(dict(key_mapper).get(word))
