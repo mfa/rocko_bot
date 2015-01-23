@@ -83,7 +83,9 @@ l = StdOutListener()
 stream = tweepy.Stream(auth, l)
 while True:
     try:
-        stream.filter(follow=USER_LIST)
+        stream.filter(track=["@rocko_sac"],
+                      languages=['de', 'en'],
+                      follow=USER_LIST)
     except TweepError:
         pass
 
