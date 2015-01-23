@@ -16,6 +16,12 @@ import json
 #from replies import replies_list
 
 
+auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
+auth.set_access_token(CLIENT_TOKEN, CLIENT_SECRET)
+api = tweepy.API(auth)
+print("connect")
+
+
 class StdOutListener(tweepy.streaming.StreamListener):
     """ A listener handles tweets are the received from the stream.
     This is a basic listener that just prints received tweets to stdout.
@@ -35,9 +41,9 @@ class StdOutListener(tweepy.streaming.StreamListener):
         # FIXME: analyse here
 
         # FIXME: reply
-        api.update_status(
-            status='@%s FIXME' % (data.get('user').get('screen_name')),
-            in_reply_to_status_id=data.get('id'))
+#        api.update_status(
+#            status='@%s FIXME' % (data.get('user').get('screen_name')),
+#            in_reply_to_status_id=data.get('id'))
         return True
 
     def on_error(self, status):
@@ -45,9 +51,7 @@ class StdOutListener(tweepy.streaming.StreamListener):
 
 
 l = StdOutListener()
-auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
-auth.set_access_token(CLIENT_TOKEN, CLIENT_SECRET)
-api = tweepy.API(auth)
 
 stream = tweepy.Stream(auth, l)
 stream.filter(follow=USER_LIST)
+#stream.userstream()
