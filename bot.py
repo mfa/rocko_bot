@@ -11,15 +11,38 @@ from credentials import (
 )
 
 import tweepy
+from tweepy.error import TweepError
 import random
 import json
-#from replies import replies_list
+from replies import replies_dict, nothing_found
+from nltk.stem.snowball import GermanStemmer
 
 
 auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
 auth.set_access_token(CLIENT_TOKEN, CLIENT_SECRET)
 api = tweepy.API(auth)
-print("connect")
+
+
+def generate_status(username, text):
+    found = []
+    stemmer = GermanStemmer()
+    key_mapper = []
+    stemmed_keys = []
+    for key in replies_dict.keys():
+        key_mapper.append((key, stemmer.stem(key)))
+        stemmed_keys.append(stemmer.stem(key))
+    for word in text.split(' '):
+        if stemmer.stem(word) in stemmed_keys:
+            found.append(dict(key_mapper).get(word))
+    if found:
+        status = u'@%s %s' % (
+            username,
+            random.choice(replies_dict.get(random.choice(found))))
+    else:
+        status = u'@%s %s' % (
+            username,
+            random.choice(nothing_found))
+    return status
 
 
 class StdOutListener(tweepy.streaming.StreamListener):
@@ -32,18 +55,18 @@ class StdOutListener(tweepy.streaming.StreamListener):
 
     def on_data(self, data):
         data = json.loads(data)
+        username = data.get('user').get('screen_name')
+        text = data.get('text')
         try:
             # FIXME: how to test if already faved?
             api.create_favorite(data.get('id'))
         except:
             pass
 
-        # FIXME: analyse here
-
-        # FIXME: reply
-#        api.update_status(
-#            status='@%s FIXME' % (data.get('user').get('screen_name')),
-#            in_reply_to_status_id=data.get('id'))
+        status = generate_status(username, text)
+        api.update_status(
+            status=status,
+            in_reply_to_status_id=data.get('id'))
         return True
 
     def on_error(self, status):
@@ -53,4 +76,8 @@ class StdOutListener(tweepy.streaming.StreamListener):
 l = StdOutListener()
 
 stream = tweepy.Stream(auth, l)
-stream.filter(follow=USER_LIST)
+while True:
+    try:
+        stream.filter(follow=USER_LIST)
+    except TweepError:
+        pass
