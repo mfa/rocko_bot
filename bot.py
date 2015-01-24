@@ -71,9 +71,9 @@ class StdOutListener(tweepy.streaming.StreamListener):
     last_own_tweet = None
 
     def on_data(self, data):
+        data = json.loads(data)
         if data.get('user', {}).get('id') == 2989208842:
             return True
-        data = json.loads(data)
         username = data.get('user').get('screen_name')
         text = data.get('text')
         print(username),
