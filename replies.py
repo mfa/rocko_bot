@@ -30,7 +30,7 @@ replies_dict = {
                 'manchmal sind sie schon komisch'],
     'firma': ['gibt nur eine',
               '@aexea',
-              'klagt nicht, kämpft'],
+              u'klagt nicht, kämpft'],
     'suite': ['Prost!',
               'schon wieder?'],
     '212': ['Prost!',
