@@ -14,38 +14,52 @@ import tweepy
 from tweepy.error import TweepError
 import random
 import json
-from replies import replies_dict, nothing_found
 from nltk.stem.snowball import GermanStemmer
 
 
-auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
-auth.set_access_token(CLIENT_TOKEN, CLIENT_SECRET)
-api = tweepy.API(auth)
+if __name__ == '__main__':
+    auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
+    auth.set_access_token(CLIENT_TOKEN, CLIENT_SECRET)
+    api = tweepy.API(auth)
 
 
-def generate_status(username, text):
-    found = []
-    stemmer = GermanStemmer()
-    key_mapper = []
-    stemmed_keys = []
-    for key in replies_dict.keys():
-        key_mapper.append((stemmer.stem(key), key))
-        stemmed_keys.append(stemmer.stem(key))
-    for a in '.#?!,;':
-        text.replace(a, '')
-    for word in text.split(' '):
-        if stemmer.stem(word) in stemmed_keys:
-            found.append(dict(key_mapper).get(stemmer.stem(word)))
-    if found:
-        status = u'@%s %s' % (
-            username,
-            random.choice(replies_dict.get(random.choice(found))))
-    else:
-        status = u'@%s %s' % (
-            username,
-            random.choice(nothing_found))
-    print(status)
-    return status
+class StatusGenerator(object):
+
+    def get_replies(self):
+        from replies import replies_dict
+        return replies_dict
+
+    def get_nothing_found(self):
+        from replies import nothing_found
+        return nothing_found
+
+    def generate_status(self, username, text):
+        found = []
+        stemmer = GermanStemmer()
+        key_mapper = []
+        stemmed_keys = []
+
+        replies_dict = self.get_replies()
+        nothing_found = self.get_nothing_found()
+
+        for key in replies_dict.keys():
+            key_mapper.append((stemmer.stem(key), key))
+            stemmed_keys.append(stemmer.stem(key))
+        for a in '.#?!,;':
+            text.replace(a, '')
+        for word in text.split(' '):
+            if stemmer.stem(word) in stemmed_keys:
+                found.append(dict(key_mapper).get(stemmer.stem(word)))
+        if found:
+            status = u'@%s %s' % (
+                username,
+                random.choice(replies_dict.get(random.choice(found))))
+        else:
+            status = u'@%s %s' % (
+                username,
+                random.choice(nothing_found))
+        print(status)
+        return status
 
 
 class StdOutListener(tweepy.streaming.StreamListener):
@@ -68,7 +82,8 @@ class StdOutListener(tweepy.streaming.StreamListener):
         except:
             pass
 
-        status = generate_status(username, text)
+        sg = StatusGenerator()
+        status = sg.generate_status(username, text)
         api.update_status(
             status=status,
             in_reply_to_status_id=data.get('id'))
@@ -78,15 +93,14 @@ class StdOutListener(tweepy.streaming.StreamListener):
         print(status)
 
 
-l = StdOutListener()
+if __name__ == '__main__':
+    l = StdOutListener()
 
-stream = tweepy.Stream(auth, l)
-while True:
-    try:
-        stream.filter(track=["@rocko_sac"],
-                      languages=['de', 'en'],
-                      follow=USER_LIST)
-    except TweepError:
-        pass
-
-#generate_status('x', '@rocko_sac kollege #test')
+    stream = tweepy.Stream(auth, l)
+    while True:
+        try:
+            stream.filter(track=["@rocko_sac"],
+                          languages=['de', 'en'],
+                          follow=USER_LIST)
+        except TweepError:
+            pass
