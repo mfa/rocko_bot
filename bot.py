@@ -72,12 +72,14 @@ class StdOutListener(tweepy.streaming.StreamListener):
 
     def on_data(self, data):
         data = json.loads(data)
-        if data.get('user', {}).get('id') == 2989208842:
-            return True
         username = data.get('user').get('screen_name')
         text = data.get('text')
         print(username),
-        print(text)
+        print(text),
+        if data.get('user', {}).get('id') == 2989208842:
+            print('filtered')
+            return True
+        print()
         try:
             # FIXME: how to test if already faved?
             api.create_favorite(data.get('id'))
